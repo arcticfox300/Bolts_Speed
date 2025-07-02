@@ -9,17 +9,21 @@ import kotlin.math.*
 @TeleOp
 class TeleOp : LinearOpMode(){
     override fun runOpMode() {
-        val motor_lift_right = hardwareMap.get(DcMotor::class.java, "motorR")
-        val motor_lift_left = hardwareMap.get(DcMotor::class.java, "motorL")
+        val motorRight = hardwareMap.get(DcMotor::class.java, "motorR")
+        val motorLeft = hardwareMap.get(DcMotor::class.java, "motorL")
+        val servo = hardwareMap.get(DcMotor::class.java, "servo")
 
-        motor_lift_left.direction = DcMotorSimple.Direction.REVERSE
+        motorLeft.direction = DcMotorSimple.Direction.REVERSE
 
         waitForStart()
 
         while(opModeIsActive()) {
             val power = -gamepad1.left_stick_y.toDouble()
-            motor_lift_right.power = max(1.0, power)
-            motor_lift_left.power = max(1.0, power)
+            motorRight.power = min(1.0, power)
+            motorLeft.power = min(1.0, power)
+
+            val direction = gamepad1.right_stick_x.toDouble()
+            servo.power = direction
         }
     }
 }
